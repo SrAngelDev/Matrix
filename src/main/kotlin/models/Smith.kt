@@ -6,12 +6,11 @@ class Smith(
     id: Long,
     nombre: String,
     localizacion: Localizacion,
-    ciudad: String,
     edad: Int,
     createdAt: LocalDateTime,
     var probInfectar: Int,
-): Personaje(id, nombre, localizacion, ciudad, edad, createdAt) {
-    override fun generar() {
+): Personaje(id, nombre, localizacion, edad, createdAt) {
+    fun generar() {
         TODO("Not yet implemented")
     }
 

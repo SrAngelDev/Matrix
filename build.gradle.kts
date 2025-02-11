@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "srangeldev"
-version = "BETA 1.0"
+version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -14,11 +14,11 @@ dependencies {
     testImplementation(kotlin("test"))
 
     //logger
-    implementation("org.lighthousegames:logging.1.5.0")
-    implementation("ch.qos.logback:logback-classic:1.5.12")
+    implementation("org.lighthousegames:logging:1.5.0")
+    implementation("ch.qos.logback:logback-classic:1.5.16")
 
     //mordant
-    implementation("com.github.ajalt.mordant:mordant:1.5.12")
+    implementation("com.github.ajalt.mordant:mordant:3.0.1")
 }
 
 tasks.test {
@@ -30,13 +30,11 @@ kotlin {
 
 tasks.jar {
     manifest {
-        attributes["Main-Class"] = "srangeldev.MainKt"
+        attributes["Main-Class"] = "MainKt"
     }
     configurations["compileClasspath"].forEach { file: File ->
         from(zipTree(file.absoluteFile))
     }
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    archiveFileName.set("howarts.jar")
+    archiveFileName.set("Vehiculo.jar")
 }
-
-

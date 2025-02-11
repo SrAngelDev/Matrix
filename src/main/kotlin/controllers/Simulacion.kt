@@ -1,4 +1,7 @@
 package srangeldev.controllers
 
-class Simulacion {
+
+class Simulacion(
+    val mapSize: Int
+) {
 }
