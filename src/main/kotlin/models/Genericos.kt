@@ -12,19 +12,7 @@ class Genericos(
     createdAt: LocalDateTime,
     var probMorir: Int
 ): Personaje(id, nombre, localizacion, edad, createdAt) {
-    fun generar(): Queue<Genericos> {
-        val generarGenericos = GenericosFactory.random()
-        return generarGenericos
-    }
 
-
-    override fun pedir() {
-        TODO("Not yet implemented")
-    }
-
-    override fun mostrar() {
-        TODO("Not yet implemented")
-    }
     override fun toString(): String {
         return "Generico(id=$id, nombre=$nombre, localizacion=$localizacion, edad=$edad, createdAt=$createdAt, probMorir=$probMorir)"
     }

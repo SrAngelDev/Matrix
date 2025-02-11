@@ -36,5 +36,5 @@ tasks.jar {
         from(zipTree(file.absoluteFile))
     }
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    archiveFileName.set("Vehiculo.jar")
+    archiveFileName.set("matrix.jar")
 }

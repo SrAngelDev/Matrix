@@ -11,8 +11,4 @@ abstract class Personaje(
     val localizacion: Localizacion = Localizacion(0, 0),
     val edad: Int,
     val createdAt: LocalDateTime,
-) {
-    //abstract fun generar()
-    abstract fun pedir()
-    abstract fun mostrar()
-}
+)

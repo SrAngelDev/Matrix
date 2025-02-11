@@ -1,3 +1,4 @@
+// Smith.kt
 package srangeldev.models
 
 import java.time.LocalDateTime
@@ -8,17 +9,42 @@ class Smith(
     localizacion: Localizacion,
     edad: Int,
     createdAt: LocalDateTime,
-    var probInfectar: Int,
-): Personaje(id, nombre, localizacion, edad, createdAt) {
-    fun generar() {
-        TODO("Not yet implemented")
+    var probInfectar: Int
+) : Personaje(id, nombre, localizacion, edad, createdAt) {
+
+    fun actuar(matrix: MutableList<MutableList<Personaje?>>) {
+        val (row, col) = obtenerPosicion(matrix)
+        val capacidadInfectar = (1..probInfectar).random()
+        println("Smith intenta infectar con capacidad $capacidadInfectar.")
+        infectarAlrededor(matrix, row, col, capacidadInfectar)
     }
 
-    override fun pedir() {
-        TODO("Not yet implemented")
+    private fun infectarAlrededor(matrix: MutableList<MutableList<Personaje?>>, row: Int, col: Int, capacidad: Int) {
+        var infectados = 0
+        for (i in -1..1) {
+            for (j in -1..1) {
+                val newRow = row + i
+                val newCol = col + j
+                if (newRow in matrix.indices && newCol in matrix[0].indices) {
+                    val personaje = matrix[newRow][newCol]
+                    if (personaje is Genericos && infectados < capacidad) {
+                        matrix[newRow][newCol] = this // Smith reemplaza al personaje
+                        infectados++
+                        println("Smith ha infectado a ${personaje.nombre} en ($newRow, $newCol).")
+                    }
+                }
+            }
+        }
     }
 
-    override fun mostrar() {
-        TODO("Not yet implemented")
+    private fun obtenerPosicion(matrix: MutableList<MutableList<Personaje?>>): Pair<Int, Int> {
+        for (row in matrix.indices) {
+            for (col in matrix[row].indices) {
+                if (matrix[row][col] == this) {
+                    return Pair(row, col)
+                }
+            }
+        }
+        return Pair(-1, -1)
     }
 }
