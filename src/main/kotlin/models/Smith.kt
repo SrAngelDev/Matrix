@@ -1,4 +1,3 @@
-// Smith.kt
 package srangeldev.models
 
 import java.time.LocalDateTime

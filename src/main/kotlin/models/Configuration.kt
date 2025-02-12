@@ -26,7 +26,7 @@ class Configuration private constructor(
         }
 
         private fun showErrorMessage() {
-            println("Argumentos inválidos.")
+            println("Argumentos inválidos")
             println("Uso: java -jar matrix.jar <mapSize> ")
             println("Ejemplo: java -jar matrix.jar 5")
             exitProcess(-1)
