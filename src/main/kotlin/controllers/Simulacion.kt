@@ -5,13 +5,7 @@ import srangeldev.factories.GenericosFactory
 import srangeldev.models.*
 import java.time.LocalDateTime
 import java.util.*
-import kotlin.concurrent.schedule
 
-/**
- * Clase que representa la simulación de Matrix.
- *
- * @property mapSize Tamaño del mapa (matriz) donde se desarrolla la simulación.
- */
 class Simulacion(
     private val mapSize: Int
 ) {
@@ -22,12 +16,8 @@ class Simulacion(
     private var smith: Smith? = null
     private val logger = logging()
 
-    /**
-     * Inicializa la matriz colocando a Neo, Smith y los personajes genéricos en posiciones aleatorias.
-     */
     private fun inicializarMatrix() {
         logger.debug { "Inicializando matrix" }
-        // Colocar Neo
         neo = Neo(
             id = GenericosFactory.getNewId(),
             nombre = "Neo",
@@ -38,7 +28,6 @@ class Simulacion(
         )
         colocarPersonaje(neo!!)
 
-        // Colocar Smith
         smith = Smith(
             id = GenericosFactory.getNewId(),
             nombre = "Smith",
@@ -49,7 +38,6 @@ class Simulacion(
         )
         colocarPersonaje(smith!!)
 
-        // Colocar personajes genéricos, se resta 2 porque ya se ha colocado NEO y SMITH
         repeat(mapSize * mapSize - 2) {
             if (genericosQueue.isNotEmpty()) {
                 colocarPersonaje(genericosQueue.poll())
@@ -57,11 +45,6 @@ class Simulacion(
         }
     }
 
-    /**
-     * Coloca un personaje en una posición aleatoria de la matriz.
-     *
-     * @param personaje Personaje a colocar en la matriz.
-     */
     private fun colocarPersonaje(personaje: Personaje) {
         logger.debug { "Colocando personaje $personaje" }
         var placed = false
@@ -75,14 +58,11 @@ class Simulacion(
         }
     }
 
-    /**
-     * Inicia la simulación de Matrix.
-     * La simulación se ejecuta durante un máximo de 300 segundos o hasta que todos los personajes sean Smith o null, que son los que consiguen el control de matrix.
-     */
     fun iniciarSimulacion() {
         logger.debug { "Iniciando simulacion" }
-        inicializarMatrix()
         println("Iniciando simulación de Matrix...")
+
+        inicializarMatrix()
 
         var time = 0
         while (time < 300 && !todosSonSmithONull(matrix)) {
@@ -93,7 +73,7 @@ class Simulacion(
                 smith?.actuar(matrix)
             }
             if (time % 5 == 0) {
-                neo?.actuar(matrix)
+                neo?.actuar(matrix, smithsDeposito)
                 imprimirMatrix()
             }
             if (time % 10 == 0) {
@@ -107,11 +87,6 @@ class Simulacion(
         imprimirInformeFinal()
     }
 
-    /**
-     * Evalúa las muertes de los personajes genéricos en la matriz.
-     * Si la probabilidad de morir es menor a 30, el personaje muere y es eliminado de la matriz.
-     * En caso contrario, se reduce su probabilidad de morir en un 10%.
-     */
     private fun evaluarMuertes() {
         for (row in 0 until mapSize) {
             for (col in 0 until mapSize) {
@@ -128,9 +103,6 @@ class Simulacion(
         }
     }
 
-    /**
-     * Intenta agregar 5 nuevos personajes genéricos a la matriz si hay espacio disponible.
-     */
     private fun agregarPersonajes() {
         repeat(5) {
             if (genericosQueue.isNotEmpty()) {
@@ -139,10 +111,6 @@ class Simulacion(
         }
     }
 
-    /**
-     * Imprime el estado actual de la matriz.
-     * Muestra "N" para Neo, "S" para Smith, "P" para personajes genéricos y espacios vacíos para celdas vacías.
-     */
     private fun imprimirMatrix() {
         println("Estado de Matrix:")
         for (row in matrix) {
@@ -158,25 +126,6 @@ class Simulacion(
         }
     }
 
-    /**
-     * Elimina un Smith de la matriz y lo agrega al depósito de Smiths eliminados.
-     *
-     * @param row Fila donde se encuentra el Smith.
-     * @param col Columna donde se encuentra el Smith.
-     */
-    fun eliminarSmith(row: Int, col: Int) {
-        val smith = matrix[row][col] as? Smith
-        if (smith != null) {
-            matrix[row][col] = null
-            smithsDeposito.add(smith)
-            println("Smith eliminado en ($row, $col) y agregado al depósito.")
-        }
-    }
-
-    /**
-     * Imprime el informe final de la simulación.
-     * Muestra la localización de Neo, los Smiths eliminados y el número de personajes generados.
-     */
     private fun imprimirInformeFinal() {
         println("--- Informe Final ---")
         println("Neo: ${neo?.localizacion}")
@@ -184,12 +133,6 @@ class Simulacion(
         println("Personajes generados: ${genericosQueue.size}")
     }
 
-    /**
-     * Función para verificar si todos los personajes en la matriz son Smith o null.
-     *
-     * @param matrix Matriz de personajes.
-     * @return `true` si todos los personajes son Smith o null, `false` en caso contrario.
-     */
     private fun todosSonSmithONull(matrix: MutableList<MutableList<Personaje?>>): Boolean {
         for (row in matrix) {
             for (personaje in row) {
