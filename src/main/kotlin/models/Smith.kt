@@ -13,7 +13,8 @@ class Smith(
 ) : Personaje(id, nombre, localizacion, edad, createdAt) {
 
     fun actuar(matrix: MutableList<MutableList<Personaje?>>) {
-        val (row, col) = obtenerPosicion(matrix)
+        val row = obtenerPosicionFila(matrix)
+        val col = obtenerPosicionColumna(matrix)
         val capacidadInfectar = (1..probInfectar).random()
         println("Smith intenta infectar con capacidad $capacidadInfectar.")
         infectarAlrededor(matrix, row, col, capacidadInfectar)
@@ -37,14 +38,25 @@ class Smith(
         }
     }
 
-    private fun obtenerPosicion(matrix: MutableList<MutableList<Personaje?>>): Pair<Int, Int> {
+    private fun obtenerPosicionFila(matrix: MutableList<MutableList<Personaje?>>): Int {
         for (row in matrix.indices) {
             for (col in matrix[row].indices) {
                 if (matrix[row][col] == this) {
-                    return Pair(row, col)
+                    return row
                 }
             }
         }
-        return Pair(-1, -1)
+        return -1
+    }
+
+    private fun obtenerPosicionColumna(matrix: MutableList<MutableList<Personaje?>>): Int {
+        for (row in matrix.indices) {
+            for (col in matrix[row].indices) {
+                if (matrix[row][col] == this) {
+                    return col
+                }
+            }
+        }
+        return -1
     }
 }
